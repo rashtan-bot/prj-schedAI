@@ -250,18 +250,17 @@
         {% load static %}
         <h2>Add Teachers</h2>
         <h5>Please use the following form to enter the Teachers into the system for timetable generation</h5>
-<form method="post">
-	{% csrf_token %}
-	<fieldset>
-        <br>
-		<div class="tabcontent" id="new">
-			{{ form.as_p }}
-            <br>
-            <a href="{% url 'editinstructor' %}"><input value="View / Edit Teachers" class="submit"></a>&nbsp;<input type="submit" value="Add Teacher" class="submit">
-		</div>
-	</fieldset>
-</form>
-
+        <form method="post">
+            {% csrf_token %}
+            <fieldset>
+                <br>
+                <div class="tabcontent" id="new">
+                    {{ form.as_p }}
+                    <br>
+                    <a href="{% url 'editinstructor' %}"><input value="View / Edit Teachers" class="submit"></a>&nbsp;<input type="submit" value="Add Teacher" class="submit">
+                </div>
+            </fieldset>
+        </form>
 {% endblock %}
 </body>
 </html>

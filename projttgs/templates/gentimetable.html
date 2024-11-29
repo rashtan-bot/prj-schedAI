@@ -70,34 +70,29 @@
         {% block content %}
         {% if sections %}
             {% for section in sections %}
-            <h2>{{ section.section_id }} ({{ section.department }})</h2>
-            <div class="table-responsive">
-                <table class="table2">
-                    <thead>
-                        <tr>
-                            <th>Class #</th>
-                            <th>Course</th>
-                            <th>Venue (Block - Room)</th>
-                            <th>Instructor</th>
-                            <th>Class Timing</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for class in schedule %}
-                        {% if class.section == section.section_id %}
-                        <tr>
-                            <td>{{ class.section_id }}</td>
-                            <td>{{ class.course }}</td>
-                            <td>{{ class.room }}</td>
-                            <td>{{ class.instructor }}</td>
-                            <td>{{ class.meeting_time }}</td>
-                        </tr>
-                        {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <hr style="border: 1px solid black;">
-            </div>
+                <h2>{{ section.section_id }} ({{ section.department }})</h2>
+
+                <div class="table-responsive">
+                    <table class="table2">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Class Timing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for class in schedule %}
+                                {% if class.section == section.section_id %}
+                                    <tr>
+                                        <td>{{ class.meeting_time }}</td>
+                                        <td>{{ class.course }}<br>({{ class.instructor }})</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <hr style="border: 1px solid black;">
+                </div>
             {% endfor %}
         {% else %}
             <p>No timetable data is available.</p>
