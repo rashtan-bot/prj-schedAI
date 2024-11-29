@@ -15,7 +15,6 @@ TOURNAMENT_SELECTION_SIZE = 3
 MUTATION_RATE = 0.05
 
 
-
 class Data:
     def __init__(self):
         self._rooms = Room.objects.all()
@@ -157,7 +156,6 @@ class Population:
     def get_schedules(self):
         return self._schedules
 
-
 class GeneticAlgorithm:
     def evolve(self, population):
         return self._mutate_population(self._crossover_population(population))
@@ -203,7 +201,6 @@ class GeneticAlgorithm:
             i += 1
         tournament_pop.get_schedules().sort(key=lambda x: x.get_fitness(), reverse=True)
         return tournament_pop
-
 
 class Class:
     def __init__(self, id, dept, section, course):
