@@ -1,0 +1,129 @@
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SchedAI</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    <style>
+      /* Global Styles */
+      :root {
+          --primary-color: #5a5a5a;
+          --secondary-color: #257a7a;
+          --background-color: #fff;
+          --font-family: 'Times New Roman', serif;
+      }
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+      html {
+          scroll-behavior: smooth;
+      }
+      h1, h2 {
+          text-align: center;
+          font-family: var(--font-family);
+      }
+      .table-responsive {
+          margin-bottom: 20px;
+      }
+      .table2 {
+          margin: 0 auto;
+          border: 2px solid var(--primary-color);
+          background-color: var(--background-color);
+      }
+      .table2 th, .table2 td {
+          border: 2px solid var(--primary-color);
+          padding: 10px;
+          text-align: center;
+      }
+      .table2 th {
+          color: var(--primary-color);
+          font-weight: bold;
+      }
+      .btn-download {
+          display: block;
+          margin: 20px auto;
+          padding: 10px 30px;
+          color: #fff;
+          background-color: var(--primary-color);
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+      }
+      .btn-download:hover {
+          background-color: var(--secondary-color);
+      }
+    </style>
+</head>
+<body>
+    <div id="timetable" style="margin-top: 3rem;">
+        <h1>SchedAI</h1>
+        <hr style="border: 1px solid black;">
+        {% block content %}
+        {% if sections %}
+            {% for section in sections %}
+            <h2>{{ section.section_id }} ({{ section.department }})</h2>
+            <div class="table-responsive">
+                <table class="table2">
+                    <thead>
+                        <tr>
+                            <th>Class #</th>
+                            <th>Course</th>
+                            <th>Venue (Block - Room)</th>
+                            <th>Instructor</th>
+                            <th>Class Timing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for class in schedule %}
+                        {% if class.section == section.section_id %}
+                        <tr>
+                            <td>{{ class.section_id }}</td>
+                            <td>{{ class.course }}</td>
+                            <td>{{ class.room }}</td>
+                            <td>{{ class.instructor }}</td>
+                            <td>{{ class.meeting_time }}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <hr style="border: 1px solid black;">
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No timetable data is available.</p>
+        {% endif %}
+        {% endblock %}
+    </div>
+    <div style="display: flex; justify-content: center;">   
+        <button class="btn btn-success" id="download" style="padding: 15px 40px; font-size: 1.25rem;">Download PDF</button>
+    </div><br><br>
+
+    <script>
+        document.getElementById("download").addEventListener("click", () => {
+            const timetable = document.getElementById("timetable");
+            if (!timetable) {
+                alert("Timetable not found!");
+                return;
+            }
+            const options = {
+                margin: 1,
+                filename: 'Timetable.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+            };
+            html2pdf().from(timetable).set(options).save();
+        });
+    </script>
+</body>
+</html>
